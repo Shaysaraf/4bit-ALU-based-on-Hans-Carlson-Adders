@@ -5,6 +5,6 @@ inputs: clk, [3:0] A, [3:0] B, [3:0] C.
 outputs: [4:0] X, [5:0] Y.     
 functionality: X = A + B, Y = X - C
 
-The ALU uses 2 HCA, one of 4 bits (for calculating <X>) and one of 5 bits (for calculating <Y>)
+The ALU uses 2 HCA, one of 4 bits (for calculating X) and one of 5 bits (for calculating Y)
 
 
