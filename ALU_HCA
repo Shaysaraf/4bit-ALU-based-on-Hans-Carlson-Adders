@@ -1,0 +1,43 @@
+module ALU_HCA(
+    input clk,
+    input [3:0] A, B, C,
+    output reg [4:0] X,
+    output reg [5:0] Y
+);
+
+    // Registers for inputs
+    reg [3:0] A_reg, B_reg, C_reg;
+
+    // Internal wires
+    wire [4:0] X_wire;
+    wire [5:0] Y_wire;
+
+    // Sign-extend and negate C for subtraction
+    wire [4:0] C_ext = {C_reg[3], C_reg};   // Sign-extend C
+    wire [4:0] C_neg = ~C_ext;              // Bitwise NOT
+
+    // Instantiate Adders
+    hans_carlson_adder_4bit HCA4 (
+        .A(A_reg),
+        .B(B_reg),
+        .cin(1'b0),
+        .sum(X_wire)
+    );
+
+    hans_carlson_adder_5bit HCA5 (
+        .A(X_wire),
+        .B(C_neg),
+        .cin(1'b1),
+        .sum(Y_wire)
+    );
+
+    // Sequential logic (no reset)
+    always @(posedge clk) begin
+        A_reg <= A;
+        B_reg <= B;
+        C_reg <= C;
+        X     <= X_wire; // A + B
+        Y     <= Y_wire; // (A + B) - C
+    end
+
+endmodule
